@@ -1,0 +1,266 @@
+$bg-primary: #05070d;
+$bg-card: #12151f;
+$accent-blue: #3b5cff;
+$text-primary: #eef0f5;
+$text-secondary: #7b8296;
+$text-muted: #565b6b;
+$error-red: #ff5c5c;
+$border-subtle: rgba(255, 255, 255, 0.08);
+$breakpoint-desktop: 900px;
+
+.page {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  background: $bg-primary;
+  overflow: hidden;
+  padding: 0 24px;
+}
+
+.symbol {
+  position: absolute;
+  top: -8%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 520px;
+  height: 520px;
+  max-width: 150vw;
+  max-height: 150vw;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.symbolImage {
+  object-fit: contain;
+}
+
+.symbolFade {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at center,
+    rgba(5, 7, 13, 0) 32%,
+    $bg-primary 78%
+  );
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 360px;
+  margin-top: 38vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.title {
+  font-family: var(--font-title), monospace;
+  font-size: 28px;
+  letter-spacing: 0.35em;
+  color: $text-primary;
+  margin: 0;
+}
+
+.subtitle {
+  font-family: var(--font-body), sans-serif;
+  font-size: 13px;
+  color: $text-secondary;
+  margin: 8px 0 0;
+}
+
+.errorMessage {
+  font-family: var(--font-body), sans-serif;
+  font-size: 13px;
+  line-height: 1.4;
+  color: $error-red;
+  margin: 8px 0 0;
+}
+
+.tabs {
+  display: flex;
+  gap: 28px;
+  border-bottom: 1px solid $border-subtle;
+  margin-bottom: 24px;
+}
+
+.tab {
+  font-family: var(--font-body), sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: $text-secondary;
+  text-decoration: none;
+  padding-bottom: 10px;
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.tabActive {
+  color: $text-primary;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 2px;
+    background: $accent-blue;
+  }
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputGroup {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.inputRow {
+  position: relative;
+}
+
+.input {
+  width: 100%;
+  background: $bg-card;
+  border: 1px solid $border-subtle;
+  border-radius: 10px;
+  padding: 14px 52px 14px 16px;
+  font-family: var(--font-body), sans-serif;
+  font-size: 14px;
+  color: $text-primary;
+  outline: none;
+  transition: border-color 0.15s ease;
+
+  &::placeholder {
+    color: $text-muted;
+  }
+
+  &:focus {
+    border-color: $accent-blue;
+  }
+}
+
+.inputError {
+  border-color: $error-red;
+}
+
+.submitButton {
+  position: absolute;
+  right: -18px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 4px solid $bg-primary;
+  background: $accent-blue;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(59, 92, 255, 0.4);
+  transition: opacity 0.15s ease;
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+}
+
+.arrow {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.forgotPassword {
+  align-self: flex-start;
+  margin-top: 14px;
+  font-family: var(--font-body), sans-serif;
+  font-size: 12px;
+  color: $accent-blue;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// ---------------------------------------------------------------
+// DESKTOP (>= 900px): mesma composição do mobile (símbolo atrás +
+// conteúdo centralizado), só ampliada e centralizada na tela toda
+// em vez de fixada no topo. Nada de layout novo, é a mesma ideia
+// em escala maior.
+// ---------------------------------------------------------------
+@media (min-width: $breakpoint-desktop) {
+  .page {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  .symbol {
+    position: relative;
+    top: 0;
+    left: 0;
+    transform: none;
+    width: min(480px, 55vh);
+    height: min(480px, 55vh);
+    max-width: min(480px, 55vh);
+    max-height: min(480px, 55vh);
+    opacity: 0.7;
+  }
+
+  .content {
+    margin-top: -140px;
+    max-width: 400px;
+  }
+
+  .title {
+    font-size: 36px;
+  }
+
+  .subtitle,
+  .errorMessage {
+    font-size: 14px;
+  }
+
+  .tab {
+    font-size: 15px;
+  }
+
+  .input {
+    font-size: 15px;
+    padding: 16px 54px 16px 18px;
+  }
+}
