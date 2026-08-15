@@ -32,7 +32,7 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined);
  * Decodifica o payload de um JWT SEM validar assinatura.
  * Isso é seguro pra uso de UI (ex: mostrar o nome/funcao do usuário),
  * porque quem valida a assinatura de verdade é sempre o backend em
- * cada requisição. Nunca confie nesses dados pra decisões de segurança.
+ * cada requisição.
  */
 function decodeToken(token: string): UsuarioToken | null {
   try {
