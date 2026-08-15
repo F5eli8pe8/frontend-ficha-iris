@@ -3,7 +3,6 @@
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 import { useAuth } from "@/context/AuthContext";
 import { ApiError } from "@/lib/api";
 import styles from "./login.module.scss";
@@ -40,17 +39,8 @@ export default function Login() {
 
   return (
     <div className={styles.page}>
-      <div className={styles.symbol} aria-hidden="true">
-        <Image
-          src="/images/olho-iris.png"
-          alt=""
-          fill
-          priority
-          sizes="(min-width: 900px) 480px, 520px"
-          className={styles.symbolImage}
-        />
-        <div className={styles.symbolFade} />
-      </div>
+      <div className={styles.backdropImage} aria-hidden="true" />
+      <div className={styles.backdropFade} aria-hidden="true" />
 
       <div className={styles.content}>
         <div className={styles.header}>
@@ -109,7 +99,9 @@ export default function Login() {
           </div>
         </form>
 
-        <Link href="/email-send" className={styles.forgotPassword}>
+            {/* Aponta pro primeiro passo do fluxo de recuperação de senha
+            (new-password). Mas eu tenho que confirmar com tu Rafa se isso é correto ou se é o 'email-send'. */}
+        <Link href="/new-password" className={styles.forgotPassword}>
           Esqueceu sua senha?
         </Link>
       </div>

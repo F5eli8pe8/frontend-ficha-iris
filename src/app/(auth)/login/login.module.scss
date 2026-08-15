@@ -1,10 +1,15 @@
-$bg-primary: #05070d;
-$bg-card: #12151f;
-$accent-blue: #3b5cff;
-$text-primary: #eef0f5;
-$text-secondary: #7b8296;
-$text-muted: #565b6b;
-$error-red: #ff5c5c;
+//Eu usei o @use para importar as variáveis do arquivo variables.scss e definir as cores e estilos do módulo de login.
+//O arquivo ficou grande com varias linhas, mas é importante lembrar que caso a imagem de fundo não esteja em bom tamanho, basta alterar os valores abaixos
+
+@use "../../../styles/variables" as vars;
+
+$bg-primary: vars.$background-dark;
+$bg-card: vars.$neutral-800;
+$accent-blue: vars.$primary-400;
+$text-primary: vars.$neutral-100;
+$text-secondary: vars.$neutral-400;
+$text-muted: vars.$neutral-600;
+$error-red: #ff5c5c; 
 $border-subtle: rgba(255, 255, 255, 0.08);
 $breakpoint-desktop: 900px;
 
@@ -12,36 +17,41 @@ $breakpoint-desktop: 900px;
   position: relative;
   min-height: 100vh;
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
   background: $bg-primary;
-  overflow: hidden;
-  padding: 0 24px;
+  padding: 24px;
 }
 
-.symbol {
-  position: absolute;
-  top: -8%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 520px;
-  height: 520px;
-  max-width: 150vw;
-  max-height: 150vw;
-  opacity: 0.6;
+
+.backdropImage {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-image: url("/images/olho-iris.png");
+  background-size: min(1120px, 118vh);
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.35;
   pointer-events: none;
 }
-
-.symbolImage {
-  object-fit: contain;
+@media (max-width: 480px) {
+  .backdropImage {
+    background-size: min(760px, 85vh);
+  }
 }
 
-.symbolFade {
-  position: absolute;
+
+.backdropFade {
+  position: fixed;
   inset: 0;
+  z-index: 0;
+  pointer-events: none;
   background: radial-gradient(
     circle at center,
-    rgba(5, 7, 13, 0) 32%,
-    $bg-primary 78%
+    rgba(5, 7, 13, 0) 0%,
+    $bg-primary 85%
   );
 }
 
@@ -50,7 +60,6 @@ $breakpoint-desktop: 900px;
   z-index: 1;
   width: 100%;
   max-width: 360px;
-  margin-top: 38vh;
   display: flex;
   flex-direction: column;
 }
@@ -64,8 +73,8 @@ $breakpoint-desktop: 900px;
   font-family: var(--font-title), monospace;
   font-size: 28px;
   letter-spacing: 0.35em;
+  margin: 0 -0.35em 0 0; 
   color: $text-primary;
-  margin: 0;
 }
 
 .subtitle {
@@ -85,7 +94,8 @@ $breakpoint-desktop: 900px;
 
 .tabs {
   display: flex;
-  gap: 28px;
+  justify-content: center;
+  gap: 60px;
   border-bottom: 1px solid $border-subtle;
   margin-bottom: 24px;
 }
@@ -127,10 +137,6 @@ $breakpoint-desktop: 900px;
   display: flex;
   flex-direction: column;
   gap: 8px;
-}
-
-.inputRow {
-  position: relative;
 }
 
 .input {
@@ -215,34 +221,8 @@ $breakpoint-desktop: 900px;
   }
 }
 
-// ---------------------------------------------------------------
-// DESKTOP (>= 900px): mesma composição do mobile (símbolo atrás +
-// conteúdo centralizado), só ampliada e centralizada na tela toda
-// em vez de fixada no topo. Nada de layout novo, é a mesma ideia
-// em escala maior.
-// ---------------------------------------------------------------
 @media (min-width: $breakpoint-desktop) {
-  .page {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-  }
-
-  .symbol {
-    position: relative;
-    top: 0;
-    left: 0;
-    transform: none;
-    width: min(480px, 55vh);
-    height: min(480px, 55vh);
-    max-width: min(480px, 55vh);
-    max-height: min(480px, 55vh);
-    opacity: 0.7;
-  }
-
   .content {
-    margin-top: -140px;
     max-width: 400px;
   }
 
@@ -263,4 +243,6 @@ $breakpoint-desktop: 900px;
     font-size: 15px;
     padding: 16px 54px 16px 18px;
   }
+
+  
 }

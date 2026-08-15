@@ -21,3 +21,10 @@ body {
 a {
   color: inherit;
 }
+
+/**
+ * Reset global mínimo. Esse arquivo foi criado só com o
+ * essencial: zera margem padrão do navegador e define uma base de
+ * cor escura. Não define nada específico de página — cada tela deve
+ * usar seu próprio .module.scss por cima disso. Caso seja necessário, eu posso deletar esse arquivo.
+ */
