@@ -10,9 +10,17 @@ export class ApiError extends Error {
   }
 }
 
-interface TokenResponse {
+// Formato bruto que o backend retorna (chave "funcao", em português —
+// contrato do backend Spring Boot, não renomear aqui). Login e registro
+// retornam exatamente o mesmo formato (registro faz login automático).
+interface LoginApiResponse {
   token: string;
   funcao: string;
+}
+
+export interface TokenResponse {
+  token: string;
+  role: string;
 }
 
 /**
@@ -25,12 +33,12 @@ interface TokenResponse {
  */
 export async function loginRequest(
   email: string,
-  senha: string
+  password: string
 ): Promise<TokenResponse> {
   const response = await fetch(`${API_URL}/api/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, senha }),
+    body: JSON.stringify({ email, senha: password }),
   });
 
   if (!response.ok) {
@@ -40,5 +48,35 @@ export async function loginRequest(
     throw new ApiError(response.status, "Algo deu errado no seu login.");
   }
 
-  return response.json();
+  const data: LoginApiResponse = await response.json();
+  return { token: data.token, role: data.funcao };
+}
+
+/**
+ * Chama POST /api/auth/register.
+ *
+ * O backend responde 409 quando o email já está cadastrado. A senha
+ * mínima (8 caracteres) também é validada no backend, mas o input já
+ * tem minLength no HTML pra dar feedback mais cedo.
+ */
+export async function registerRequest(
+  nomeUsuario: string,
+  email: string,
+  password: string
+): Promise<TokenResponse> {
+  const response = await fetch(`${API_URL}/api/auth/register`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ nomeUsuario, email, senha: password }),
+  });
+
+  if (!response.ok) {
+    if (response.status === 409) {
+      throw new ApiError(409, "Esse email já está cadastrado.");
+    }
+    throw new ApiError(response.status, "Algo deu errado no seu cadastro.");
+  }
+
+  const data: LoginApiResponse = await response.json();
+  return { token: data.token, role: data.funcao };
 }

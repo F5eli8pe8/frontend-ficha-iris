@@ -1,0 +1,31 @@
+@use "../../styles/variables" as vars;
+
+.tab {
+  flex: 1; 
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  position: relative;
+  padding-bottom: 8px;
+  color: vars.$primary-300;
+}
+
+.tabActive {
+  cursor: default;
+  color: #ffffff;
+
+  // Trecho "aceso" da linha — sobrepõe exatamente a linha de fundo
+  // que vem do container (.tabs), só na largura dessa aba.
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 1px;
+    background: #ffffff;
+  }
+}

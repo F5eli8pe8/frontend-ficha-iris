@@ -1,0 +1,25 @@
+@use "../../styles/variables" as vars;
+
+.input {
+  width: 100%;
+  font-size: 14px;
+  color: #ffffff;
+  background: vars.$neutral-700; // era transparent — agora cada input carrega sua própria cor
+  border: none;
+  outline: none;
+  padding: 6px 8px;
+  border-radius: 4px; // esse valor é sobrescrito por posição em login.module.scss
+
+  &::placeholder {
+    color: vars.$neutral-400; // TODO: estimado, não capturado
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+.inputError {
+  outline: 1px solid vars.$affirmative-500;
+}

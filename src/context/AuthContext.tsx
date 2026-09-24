@@ -8,41 +8,28 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { loginRequest } from "@/lib/api";
+import { loginRequest, registerRequest } from "@/lib/api";
+import type { User, AuthContextValue } from "./AuthContext.interface";
 
 const TOKEN_STORAGE_KEY = "iris:token";
-
-interface UsuarioToken {
-  id: string;
-  email: string;
-  funcao: string;
-}
-
-interface AuthContextValue {
-  usuario: UsuarioToken | null;
-  token: string | null;
-  carregando: boolean;
-  login: (email: string, senha: string) => Promise<void>;
-  logout: () => void;
-}
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 /**
  * Decodifica o payload de um JWT SEM validar assinatura.
- * Isso é seguro pra uso de UI (ex: mostrar o nome/funcao do usuário),
+ * Isso é seguro pra uso de UI (ex: mostrar o nome/role do usuário),
  * porque quem valida a assinatura de verdade é sempre o backend em
  * cada requisição. Nunca confie nesses dados pra decisões de segurança.
  */
-function decodeToken(token: string): UsuarioToken | null {
+function decodeToken(token: string): User | null {
   try {
     const payload = token.split(".")[1];
-    const normalizado = payload.replace(/-/g, "+").replace(/_/g, "/");
-    const decoded = JSON.parse(atob(normalizado));
+    const normalized = payload.replace(/-/g, "+").replace(/_/g, "/");
+    const decoded = JSON.parse(atob(normalized));
     return {
       id: decoded.sub ?? decoded.id ?? "",
       email: decoded.email ?? "",
-      funcao: decoded.funcao ?? "",
+      role: decoded.funcao ?? "",
     };
   } catch {
     return null;
@@ -51,37 +38,45 @@ function decodeToken(token: string): UsuarioToken | null {
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [token, setToken] = useState<string | null>(null);
-  const [usuario, setUsuario] = useState<UsuarioToken | null>(null);
-  const [carregando, setCarregando] = useState(true);
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  // Ao carregar a aplicação, recupera o token salvo (se existir).
-  // localStorage só existe no cliente, então isso precisa rodar num
-  // efeito (não dá pra ler durante o render do servidor).
   useEffect(() => {
-    const armazenado = localStorage.getItem(TOKEN_STORAGE_KEY);
-    if (armazenado) {
+    const stored = localStorage.getItem(TOKEN_STORAGE_KEY);
+    if (stored) {
       // eslint-disable-next-line react-hooks/set-state-in-effect -- bootstrap único a partir do localStorage no mount, não é sincronização contínua
-      setToken(armazenado);
-      setUsuario(decodeToken(armazenado));
+      setToken(stored);
+      setUser(decodeToken(stored));
     }
-    setCarregando(false);
+    setLoading(false);
   }, []);
 
-  const login = useCallback(async (email: string, senha: string) => {
-    const { token: novoToken } = await loginRequest(email, senha);
-    localStorage.setItem(TOKEN_STORAGE_KEY, novoToken);
-    setToken(novoToken);
-    setUsuario(decodeToken(novoToken));
+  const login = useCallback(async (email: string, password: string) => {
+    const { token: newToken } = await loginRequest(email, password);
+    localStorage.setItem(TOKEN_STORAGE_KEY, newToken);
+    setToken(newToken);
+    setUser(decodeToken(newToken));
   }, []);
+
+  // Registro faz login automático (o backend já retorna token no cadastro).
+  const register = useCallback(
+    async (name: string, email: string, password: string) => {
+      const { token: newToken } = await registerRequest(name, email, password);
+      localStorage.setItem(TOKEN_STORAGE_KEY, newToken);
+      setToken(newToken);
+      setUser(decodeToken(newToken));
+    },
+    []
+  );
 
   const logout = useCallback(() => {
     localStorage.removeItem(TOKEN_STORAGE_KEY);
     setToken(null);
-    setUsuario(null);
+    setUser(null);
   }, []);
 
   return (
-    <AuthContext.Provider value={{ usuario, token, carregando, login, logout }}>
+    <AuthContext.Provider value={{ user, token, loading, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );

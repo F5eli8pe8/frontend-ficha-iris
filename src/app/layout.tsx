@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { PT_Mono, Quantico } from "next/font/google";
 import { AuthProvider } from "@/context/AuthContext";
-import "./globals.css";
+import "@/styles/globals.css";
 
 const ptMono = PT_Mono({
   subsets: ["latin"],

@@ -5,97 +5,97 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { ApiError } from "@/lib/api";
+import { Button } from "@/components/Button/Button";
+import { Input } from "@/components/Input/Input";
 import styles from "./login.module.scss";
+import { Tab } from "@/components/Tab/Tab";
+import { ArrowIcon } from "@/components/icons/ArrowIcon";
+import { SpinnerIcon } from "@/components/icons/SpinnerIcon";
 
-type ErroTipo = "credenciais" | "servidor" | null;
+type ErrorType = "credentials" | "server" | null;
+
+
 
 export default function Login() {
   const router = useRouter();
   const { login } = useAuth();
 
   const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
-  const [carregando, setCarregando] = useState(false);
-  const [erro, setErro] = useState<ErroTipo>(null);
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<ErrorType>(null);
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
-    setErro(null);
-    setCarregando(true);
+    setError(null);
+    setLoading(true);
 
     try {
-      await login(email, senha);
+      await login(email, password);
       router.push("/");
     } catch (err) {
       if (err instanceof ApiError && err.status === 404) {
-        setErro("credenciais");
+        setError("credentials");
       } else {
-        setErro("servidor");
+        setError("server");
       }
     } finally {
-      setCarregando(false);
+      setLoading(false);
     }
   }
 
   return (
     <div className={styles.page}>
       <div className={styles.backdropImage} aria-hidden="true" />
-      <div className={styles.backdropFade} aria-hidden="true" />
 
       <div className={styles.content}>
         <div className={styles.header}>
           <h1 className={styles.title}>I.R.I.S</h1>
 
-          {erro ? (
+          {error ? (
             <p className={styles.errorMessage} role="alert">
-              {erro === "credenciais"
+              {error === "credentials"
                 ? "Email ou senha incorretos. Tente novamente."
                 : "Algo deu errado no seu login. Contate o suporte."}
             </p>
           ) : (
-            <p className={styles.subtitle}>Boas vindas, agente</p>
+            <p className={styles.subtitle}>Boas Vindas Agente</p>
           )}
         </div>
 
         <div className={styles.tabs}>
-          <span className={`${styles.tab} ${styles.tabActive}`}>Login</span>
-          <Link href="/register" className={styles.tab}>
-            Registro
-          </Link>
+          <Tab active>Login</Tab>
+          <Tab href="/register">Registro</Tab>
         </div>
 
         <form className={styles.form} onSubmit={handleSubmit}>
           <div className={styles.inputGroup}>
-            <input
+            <Input
               type="email"
               required
               placeholder="Email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
-              disabled={carregando}
-              className={`${styles.input} ${erro ? styles.inputError : ""}`}
+              disabled={loading}
+              hasError={!!error}
             />
-            <input
+            <Input
               type="password"
               required
               placeholder="Senha"
-              value={senha}
-              onChange={(event) => setSenha(event.target.value)}
-              disabled={carregando}
-              className={`${styles.input} ${erro ? styles.inputError : ""}`}
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              disabled={loading}
+              hasError={!!error}
             />
-            <button
+              <Button
               type="submit"
-              className={styles.submitButton}
-              disabled={carregando}
+              disabled={loading}
               aria-label="Entrar"
+              className={`${styles.submitButton} ${loading ? `${styles.submitButtonLoading} loading` : ""}`}
             >
-              {carregando ? (
-                <span className={styles.spinner} />
-              ) : (
-                <span className={styles.arrow}>→</span>
-              )}
-            </button>
+              {loading ? <SpinnerIcon /> : <ArrowIcon />}
+            </Button>
           </div>
         </form>
 

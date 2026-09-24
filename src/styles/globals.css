@@ -1,0 +1,29 @@
+:root {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: var(--font-body);
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  background: #05070d;
+  color: #eef0f5;
+}
+
+a {
+  color: inherit;
+}
+
+/**
+ * Reset global mínimo: zera margem padrão do navegador e define a
+ * base de cor escura. Cada tela usa seu próprio .module.scss por cima disso.
+ */

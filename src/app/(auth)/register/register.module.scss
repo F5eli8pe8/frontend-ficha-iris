@@ -69,7 +69,7 @@
 
 .tabs {
   display: flex;
-  border-bottom: 1px solid vars.$primary-700; 
+  border-bottom: 1px solid vars.$primary-700;
 }
 
 .form {
@@ -80,10 +80,9 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 1px; 
-  overflow: visible; 
+  gap: 1px;
+  overflow: visible;
 
-  
   > input:first-child {
     border-radius: 8px 8px 0 0;
   }
@@ -95,7 +94,7 @@
 
 .submitButton {
   position: absolute;
-  right: -17px; 
+  right: -17px;
   top: 50%;
   transform: translateY(-50%);
 }
@@ -104,9 +103,3 @@
   --button-bg: #{vars.$primary-700};
 }
 
-
-.forgotPassword {
-  font-size: 10px;
-  color: vars.$primary-400;
-  text-decoration: none;
-}
