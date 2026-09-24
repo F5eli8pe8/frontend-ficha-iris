@@ -10,7 +10,7 @@ export class ApiError extends Error {
   }
 }
 
-// Formato bruto que o backend retorna (chave "funcao", em português —
+// Formato bruto que o backend retorna (chave "funcao", em português.
 // contrato do backend Spring Boot, não renomear aqui). Login e registro
 // retornam exatamente o mesmo formato (registro faz login automático).
 interface LoginApiResponse {

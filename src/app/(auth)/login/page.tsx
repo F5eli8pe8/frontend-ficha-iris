@@ -5,10 +5,10 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { ApiError } from "@/lib/api";
-import { Button } from "@/components/Button/Button";
-import { Input } from "@/components/Input/Input";
+import { Button } from "@/components/button/Button";
+import { Input } from "@/components/input/Input";
 import styles from "./login.module.scss";
-import { Tab } from "@/components/Tab/Tab";
+import { Tab } from "@/components/tab/Tab";
 import { ArrowIcon } from "@/components/icons/ArrowIcon";
 import { SpinnerIcon } from "@/components/icons/SpinnerIcon";
 
