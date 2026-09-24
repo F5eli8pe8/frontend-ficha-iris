@@ -1,0 +1,112 @@
+@use "../../../styles/variables" as vars;
+
+.page {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  max-width: 402px;
+  margin: 0 auto;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.backdropImage {
+  position: absolute;
+  top: 48%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 403px;
+  height: 403px;
+  background-image: url("/images/olho_IRIS.png");
+  background-size: cover;
+  background-position: center;
+  pointer-events: none;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  width: 262px;
+  gap: 16px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 4px;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-title);
+  font-size: 24px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #ffffff;
+}
+
+.subtitle {
+  margin: 0;
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: vars.$primary-200;
+}
+
+.errorMessage {
+  margin: 0;
+  font-size: 14px;
+  line-height: 100%;
+  text-align: center;
+  color: vars.$affirmative-500;
+}
+
+.tabs {
+  display: flex;
+  border-bottom: 1px solid vars.$primary-700; 
+}
+
+.form {
+  width: 100%;
+}
+
+.inputGroup {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1px; 
+  overflow: visible; 
+
+  
+  > input:first-child {
+    border-radius: 8px 8px 0 0;
+  }
+
+  > input:last-child {
+    border-radius: 0 0 8px 8px;
+  }
+}
+
+.submitButton {
+  position: absolute;
+  right: -17px; 
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.submitButtonLoading {
+  --button-bg: #{vars.$primary-700};
+}
+
+
+.forgotPassword {
+  font-size: 10px;
+  color: vars.$primary-400;
+  text-decoration: none;
+}

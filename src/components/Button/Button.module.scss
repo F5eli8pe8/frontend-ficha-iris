@@ -1,0 +1,24 @@
+@use "../../styles/variables" as vars;
+
+.button {
+  width: 34px;
+  height: 34px;
+  border-radius: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--button-bg, #{vars.$primary-500}); // era: background: vars.$primary-500;
+  border: 3px solid vars.$neutral-900;
+  color: #ffffff;
+  cursor: pointer;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+ 
+  &:global(.loading):disabled {
+    opacity: 1;
+  }
+}
+
